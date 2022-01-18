@@ -10,7 +10,7 @@ const router = express.Router()
 
 router.get('/', (req, res, next) => {
 	Car.getAll()
-		.then(car=>{
+		.then(car => {
 			res.json(car)
 		})
 		.catch(next)
@@ -25,7 +25,11 @@ router.post('/',
 	checkVinNumberValid,
 	checkVinNumberUnique,
 	(req, res, next) => {
-		res.json('posttem')
+		Car.create(req.body)
+			.then(esp=>{
+				res.json(esp)
+			})
+			.catch(next)
 	})
 
 router.use((err, req, res, next) => { // eslint-disable-line
