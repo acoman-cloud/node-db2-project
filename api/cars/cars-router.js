@@ -20,23 +20,18 @@ router.get('/:id', checkCarId, (req, res, next) => {
 	res.json(req.car)
 })
 
-router.post('/',
+router.post(
+	'/',
 	checkCarPayload,
 	checkVinNumberValid,
 	checkVinNumberUnique,
-	(req, res, next) => {
-		Car.create(req.body)
-			.then(esp=>{
-				res.json(esp)
-			})
-			.catch(next)
+	async (req, res, next) => {
+		try {
+				const car = await Car.create(req.body)
+				res.json(car)
+			} catch (err) {
+				next(err)
+			}
 	})
-
-router.use((err, req, res, next) => { // eslint-disable-line
-	res.status(err.status || 500).json({
-		message: err.message,
-		stack: err.stack,
-	})
-})
 
 module.exports = router
